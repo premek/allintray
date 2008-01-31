@@ -1,0 +1,313 @@
+<li><tt>#!/usr/bin/env perl</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt> &nbsp; &nbsp;## &nbsp; # &nbsp;# &nbsp;# &nbsp; &nbsp; &nbsp; &nbsp; # &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</tt></li>
+<li><tt> &nbsp; # &nbsp;# &nbsp;# &nbsp;# &nbsp; &nbsp; ### &nbsp; #### &nbsp;### &nbsp; ### &nbsp; # &nbsp;# &nbsp;</tt></li>
+<li><tt> &nbsp; #### &nbsp;# &nbsp;# &nbsp;# &nbsp;# &nbsp;# &nbsp; # &nbsp; &nbsp;# &nbsp; &nbsp;# &nbsp;# &nbsp; # # &nbsp;</tt></li>
+<li><tt> &nbsp; # &nbsp;# &nbsp;# &nbsp;# &nbsp;# &nbsp;# &nbsp;# &nbsp; ### &nbsp;# &nbsp; &nbsp; ### &nbsp; &nbsp;# &nbsp; </tt></li>
+<li><tt> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ## &nbsp; &nbsp;</tt></li>
+<li><tt>##################################################</tt></li>
+<li><tt># &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;#</tt></li>
+<li><tt># &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ALLINTRAY &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #</tt></li>
+<li><tt># &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Date/time, CPU/RAM usage, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #</tt></li>
+<li><tt># &nbsp; &nbsp; &nbsp; network traffic, volume control &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;#</tt></li>
+<li><tt># &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;#</tt></li>
+<li><tt>##################################################</tt></li>
+<li><tt># &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;#</tt></li>
+<li><tt># &nbsp; Copyright (c) 2008 Premek Vyhnal &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #</tt></li>
+<li><tt># &nbsp; &lt;premysl.vyhnal gmail.com&gt; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #</tt></li>
+<li><tt># &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;#</tt></li>
+<li><tt># &nbsp; Used code: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #</tt></li>
+<li><tt># &nbsp; &nbsp;- volwheel.pl &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #</tt></li>
+<li><tt># &nbsp; &nbsp; &nbsp; - thanks to Olivier Duclos - oliwer.net &nbsp;#</tt></li>
+<li><tt># &nbsp; &nbsp;- gkrellm-bfm plugin &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;#</tt></li>
+<li><tt># &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;#</tt></li>
+<li><tt>##################################################</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt># This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version. &nbsp;</tt></li>
+<li><tt># This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. &nbsp;See the GNU General Public License for more details. &nbsp;</tt></li>
+<li><tt># You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA &nbsp;02111-1307 &nbsp;USA</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt># TODO: </tt></li>
+<li><tt># &nbsp; datum: vbox do dvou radku datum cas (jak zmensit pismo?)</tt></li>
+<li><tt>#</tt></li>
+<li><tt># &nbsp; jak znazornit traffic (jak zjistit maximum)</tt></li>
+<li><tt>#</tt></li>
+<li><tt># &nbsp; šířka barů</tt></li>
+<li><tt>#</tt></li>
+<li><tt># &nbsp; znazornovat mute</tt></li>
+<li><tt>#</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt># ##################</tt></li>
+<li><tt># co to potřebuje:</tt></li>
+<li><tt># ##################</tt></li>
+<li><tt># amixer</tt></li>
+<li><tt># + to co se nastaví na kliknutí:</tt></li>
+<li><tt># &nbsp; &nbsp; xmessage</tt></li>
+<li><tt># &nbsp; &nbsp; alsamixergui (alsamixer v xtermu)</tt></li>
+<li><tt># &nbsp; &nbsp; ccal (gcal)</tt></li>
+<li><tt># ##################</tt></li>
+<li><tt># /proc/stat</tt></li>
+<li><tt># /proc/net/dev</tt></li>
+<li><tt># ##################</tt></li>
+<li><tt># perl</tt></li>
+<li><tt># Gtk2</tt></li>
+<li><tt># Gtk2::TrayIcon</tt></li>
+<li><tt># ##################</tt></li>
+<li><tt>#</tt></li>
+<li><tt># funguje v trayeru</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>use warnings; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; </tt></li>
+<li><tt>use Gtk2 '-init';</tt></li>
+<li><tt>use Gtk2::TrayIcon;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt># argumenty z prikazovy radky:</tt></li>
+<li><tt>$delay = shift (@ARGV) || 1000; # refresh rate (ms)</tt></li>
+<li><tt>$rxmax = shift (@ARGV) || 100; &nbsp; # max download (kBps)</tt></li>
+<li><tt>$txmax = shift (@ARGV) || 40; &nbsp; # max upload (kBps)</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>$MIXER = "alsamixergui";</tt></li>
+<li><tt>$MIXER = "xterm -e 'alsamixer'";</tt></li>
+<li><tt>$PROCMAN = "xterm -e 'htop'";</tt></li>
+<li><tt>$PROCMAN = "gtaskmanager";</tt></li>
+<li><tt>$CAL1 = "xmessage \"`ccal`\""; # nebo gcal</tt></li>
+<li><tt>$CAL2 = "xmessage \"`ccal ".((localtime(time))[5] + 1900)."`\"";</tt></li>
+<li><tt>$MEM = "xmessage \"`free`\"";</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>$PROCSTAT = "/proc/stat";</tt></li>
+<li><tt>$PROCNET = "/proc/net/dev";</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>%labels = (</tt></li>
+<li><tt> &nbsp; &nbsp;&nbsp; tx=&gt;'tx',</tt></li>
+<li><tt> &nbsp; &nbsp;&nbsp; rx=&gt;'rx',</tt></li>
+<li><tt> &nbsp; &nbsp;&nbsp; r=&gt;'R',</tt></li>
+<li><tt> &nbsp; &nbsp;&nbsp; c=&gt;'C',</tt></li>
+<li><tt> &nbsp; &nbsp;&nbsp; vm=&gt;'m',</tt></li>
+<li><tt> &nbsp; &nbsp;&nbsp; vp=&gt;'p',</tt></li>
+<li><tt> &nbsp; &nbsp;&nbsp; );</tt></li>
+<li><tt>=long labels:</tt></li>
+<li><tt>%labels = (</tt></li>
+<li><tt> &nbsp; &nbsp;&nbsp; tx=&gt;'Upload',</tt></li>
+<li><tt> &nbsp; &nbsp;&nbsp; rx=&gt;'Download',</tt></li>
+<li><tt> &nbsp; &nbsp;&nbsp; r=&gt;'RAM',</tt></li>
+<li><tt> &nbsp; &nbsp;&nbsp; c=&gt;'CPU',</tt></li>
+<li><tt> &nbsp; &nbsp;&nbsp; vm=&gt;'Master',</tt></li>
+<li><tt> &nbsp; &nbsp;&nbsp; vp=&gt;'PCM',</tt></li>
+<li><tt> &nbsp; &nbsp;&nbsp; );</tt></li>
+<li><tt>=cut</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>$tray = Gtk2::TrayIcon-&gt;new("allintray");</tt></li>
+<li><tt>$eventbox = Gtk2::EventBox-&gt;new;</tt></li>
+<li><tt>$tooltip= Gtk2::Tooltips-&gt;new;</tt></li>
+<li><tt>$hbox = Gtk2::HBox-&gt;new(0,0);</tt></li>
+<li><tt>#$vbox = Gtk2::VBox-&gt;new(0,0);</tt></li>
+<li><tt>#$dlabel = Gtk2::Label-&gt;new("A");</tt></li>
+<li><tt>$tlabel = Gtk2::Label-&gt;new;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>@bars = sort keys %labels;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>foreach (@bars) {</tt></li>
+<li><tt> &nbsp; $bar{$_} = Gtk2::ProgressBar-&gt;new;</tt></li>
+<li><tt> &nbsp; $bar{$_}-&gt;set_orientation('bottom-to-top');</tt></li>
+<li><tt> &nbsp; $bar{$_}-&gt;set_text($labels{$_});</tt></li>
+<li><tt> &nbsp; $eventbox{$_} = Gtk2::EventBox-&gt;new;</tt></li>
+<li><tt> &nbsp; $hbox-&gt;add($eventbox{$_});</tt></li>
+<li><tt> &nbsp; $eventbox{$_}-&gt;add($bar{$_});</tt></li>
+<li><tt>}</tt></li>
+<li><tt>#$hbox-&gt;add($vbox);</tt></li>
+<li><tt>#$vbox-&gt;add($tlabel);</tt></li>
+<li><tt>#$vbox-&gt;add($dlabel);</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>$eventbox{t} = Gtk2::EventBox-&gt;new;</tt></li>
+<li><tt>$hbox-&gt;add($eventbox{t});</tt></li>
+<li><tt>$eventbox{t}-&gt;add($tlabel);</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>$tray-&gt;add($eventbox);</tt></li>
+<li><tt>$eventbox-&gt;add($hbox);</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>$eventbox-&gt;signal_connect( 'button_release_event', \&click );</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>$eventbox{vm}-&gt;signal_connect( 'button_release_event', \&vm_click );</tt></li>
+<li><tt>$eventbox{vm}-&gt;signal_connect( 'scroll_event', \&vm_scroll);</tt></li>
+<li><tt>$eventbox{vp}-&gt;signal_connect( 'button_release_event', \&vp_click );</tt></li>
+<li><tt>$eventbox{vp}-&gt;signal_connect( 'scroll_event', \&vp_scroll);</tt></li>
+<li><tt>$eventbox{r}-&gt;signal_connect( 'button_release_event', \&r_click );</tt></li>
+<li><tt>$eventbox{c}-&gt;signal_connect( 'button_release_event', \&c_click );</tt></li>
+<li><tt>$eventbox{t}-&gt;signal_connect( 'button_release_event', \&t_click );</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>$tray-&gt;show_all;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>open(STAT,$PROCSTAT);</tt></li>
+<li><tt>open(NET,$PROCNET);</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&update;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>Glib::Timeout-&gt;add($delay, \&update);</tt></li>
+<li><tt>Gtk2-&gt;main();</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>##########################################################################</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>#global click</tt></li>
+<li><tt>sub click {</tt></li>
+<li><tt> &nbsp; ($check, $event) = @_;</tt></li>
+<li><tt> &nbsp; &popup if (3 eq $event-&gt;button)</tt></li>
+<li><tt>}</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>#local clicks</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>sub vm_click {</tt></li>
+<li><tt> &nbsp; ($check, $event) = @_;</tt></li>
+<li><tt> &nbsp; &launchMixer if (1 eq $event-&gt;button);</tt></li>
+<li><tt> &nbsp; &mute ("vm") if (2 eq $event-&gt;button);</tt></li>
+<li><tt>}</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>sub vm_scroll {</tt></li>
+<li><tt> &nbsp; ($check, $event) = @_;</tt></li>
+<li><tt> &nbsp; &volup ("Master") if ("up" eq $event-&gt;direction);</tt></li>
+<li><tt> &nbsp; &voldown ("Master") if ("down" eq $event-&gt;direction);</tt></li>
+<li><tt> &nbsp; &update;</tt></li>
+<li><tt>}</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>sub vp_click {</tt></li>
+<li><tt> &nbsp; ($check, $event) = @_;</tt></li>
+<li><tt> &nbsp; &launchMixer if (1 eq $event-&gt;button);</tt></li>
+<li><tt> &nbsp; &mute ("vp") if (2 eq $event-&gt;button);</tt></li>
+<li><tt>}</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>sub vp_scroll {</tt></li>
+<li><tt> &nbsp; ($check, $event) = @_;</tt></li>
+<li><tt> &nbsp; &volup ("PCM") if ("up" eq $event-&gt;direction);</tt></li>
+<li><tt> &nbsp; &voldown ("PCM") if ("down" eq $event-&gt;direction);</tt></li>
+<li><tt> &nbsp; &update;</tt></li>
+<li><tt>}</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>sub t_click {</tt></li>
+<li><tt> &nbsp; ($check, $event) = @_;</tt></li>
+<li><tt> &nbsp; if (1 eq $event-&gt;button) { exec $CAL1 unless fork; }</tt></li>
+<li><tt> &nbsp; if (2 eq $event-&gt;button) { exec $CAL2 unless fork; }</tt></li>
+<li><tt>}</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>sub r_click {</tt></li>
+<li><tt> &nbsp; ($check, $event) = @_;</tt></li>
+<li><tt> &nbsp; if (1 eq $event-&gt;button) { exec $MEM unless fork; }</tt></li>
+<li><tt>}</tt></li>
+<li><tt>sub c_click {</tt></li>
+<li><tt> &nbsp; ($check, $event) = @_;</tt></li>
+<li><tt> &nbsp; if (1 eq $event-&gt;button) { exec $PROCMAN unless fork; }</tt></li>
+<li><tt>}</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>##########################################################################</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>sub launchMixer { exec $MIXER unless fork; }</tt></li>
+<li><tt>sub volup { system "amixer set $_[0] 5%+ &&gt; /dev/null"; }</tt></li>
+<li><tt>sub voldown { system "amixer set $_[0] 5%- &&gt; /dev/null"; }</tt></li>
+<li><tt>sub mute {</tt></li>
+<li><tt> &nbsp; if($bar{$_[0]}-&gt;get_text eq "x"){</tt></li>
+<li><tt> &nbsp; &nbsp;&nbsp; $bar{$_[0]}-&gt;set_text($was{$_[0]});</tt></li>
+<li><tt> &nbsp; } else {</tt></li>
+<li><tt> &nbsp; &nbsp;&nbsp; $was{$_[0]}=$bar{$_[0]}-&gt;get_text;</tt></li>
+<li><tt> &nbsp; &nbsp;&nbsp; $bar{$_[0]}-&gt;set_text("x");</tt></li>
+<li><tt> &nbsp; }</tt></li>
+<li><tt> &nbsp; system "amixer set ".($_[0]eq"vm" ? "Master":"PCM")." toggle&gt; /dev/null";</tt></li>
+<li><tt>}</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>sub popup {</tt></li>
+<li><tt> &nbsp; $item_factory = Gtk2::ItemFactory-&gt;new("Gtk2::Menu", '&lt;main&gt;', undef);</tt></li>
+<li><tt> &nbsp; $popup_menu = $item_factory-&gt;get_widget('&lt;main&gt;');</tt></li>
+<li><tt> &nbsp; @menu_items = (</tt></li>
+<li><tt> &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; { path =&gt; '/Exit', &nbsp; &nbsp; &nbsp; &nbsp;item_type =&gt; '&lt;Item&gt;', callback =&gt; \&out}</tt></li>
+<li><tt> &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; );</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt> &nbsp; $item_factory-&gt;create_items(undef, @menu_items);</tt></li>
+<li><tt> &nbsp; $popup_menu-&gt;show_all;</tt></li>
+<li><tt> &nbsp; $popup_menu-&gt;popup(undef, undef, undef, undef, 0, 0);</tt></li>
+<li><tt>}</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>###########################################################################################</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>sub cpu {</tt></li>
+<li><tt> &nbsp; seek STAT,0,0;</tt></li>
+<li><tt> &nbsp; &lt;STAT&gt; =~ m/^cpu\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+).*$/;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt> &nbsp; $load = $1+$2+$3;</tt></li>
+<li><tt> &nbsp; $total = $load+$4+$5+$6+$7;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt> &nbsp; unless (defined $lasttotal){ $ret=0; }</tt></li>
+<li><tt> &nbsp; elsif (($total - $lasttotal) &lt;= 0){ $ret=100; } # bez tohohle to obcas zdechne ;)</tt></li>
+<li><tt> &nbsp; else { $ret = int((100 * ($load - $lastload))/($total - $lasttotal)); }</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt> &nbsp; ($lastload, $lasttotal) = ($load,$total);</tt></li>
+<li><tt> &nbsp; return $ret;</tt></li>
+<li><tt>}</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>sub net { # return (Receive,Transmit) in kBps</tt></li>
+<li><tt> &nbsp; seek NET,0,0;</tt></li>
+<li><tt> &nbsp; ($rx, $tx) = (grep(/^\s*eth0/,&lt;NET&gt;))[0] =~ m/eth0:\s*(\d+)\s+(?:\d+\s+){7}(\d+)/;</tt></li>
+<li><tt> &nbsp; not defined $lastrx and @ret = (0,0) or @ret = (int(($rx-$lastrx)/1024/($delay/1000)), int(($tx-$lasttx)/1024/($delay/1000)));</tt></li>
+<li><tt> &nbsp; ($lastrx, $lasttx) = ($rx, $tx);</tt></li>
+<li><tt> &nbsp; return (@ret);</tt></li>
+<li><tt>}</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>sub mem {</tt></li>
+<li><tt> &nbsp; `free` =~ m/Mem:\s*(\d+).*cache:\s+(\d+)/ms;</tt></li>
+<li><tt> &nbsp; return 100*$2/$1;</tt></li>
+<li><tt>}</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>sub vol {</tt></li>
+<li><tt> &nbsp; $_ = `amixer`;</tt></li>
+<li><tt> &nbsp; s/\n\s+/ /g;</tt></li>
+<li><tt> &nbsp; return (/'Master'.*\[(\d+)%\]/, /'PCM'.*\[(\d+)%\]/);</tt></li>
+<li><tt>}</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>sub update {</tt></li>
+<li><tt> &nbsp; $mem=&mem;</tt></li>
+<li><tt> &nbsp; $cpu=&cpu;</tt></li>
+<li><tt> &nbsp; ($mvol,$pvol) = &vol;</tt></li>
+<li><tt> &nbsp; ($nrx, $ntx) = &net;</tt></li>
+<li><tt> &nbsp; ($minute,$hour,$day,$month,$year) = (localtime)[1 .. 5]; $year+=1900; $month++;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt> &nbsp; $bar{rx}-&gt;set_fraction($nrx/$rxmax&gt;1?1:$nrx/$rxmax);</tt></li>
+<li><tt> &nbsp; $bar{tx}-&gt;set_fraction($ntx/$txmax&gt;1?1:$ntx/$txmax);</tt></li>
+<li><tt> &nbsp; $bar{r}-&gt;set_fraction($mem/100);</tt></li>
+<li><tt> &nbsp; $bar{c}-&gt;set_fraction($cpu/100);</tt></li>
+<li><tt> &nbsp; $bar{vm}-&gt;set_fraction($mvol/100);</tt></li>
+<li><tt> &nbsp; $bar{vp}-&gt;set_fraction($pvol/100);</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt> &nbsp; $tooltip-&gt;set_tip($tray,</tt></li>
+<li><tt> &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; sprintf("%d. %d. %d\n%d:%02d\n\nRAM: %d%%\nCPU: %d%%\n\nNet:\nUPL: %d kB/s\nDWN: %d kB/s\n\nVol:\nMaster: %d%%\nPCM: %d%%",</tt></li>
+<li><tt> &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; $day,$month,$year,$hour,$minute,$mem,$cpu,$ntx,$nrx,$mvol,$pvol));</tt></li>
+<li><tt> &nbsp; $tlabel-&gt;set_text(sprintf(" %d:%02d " , $hour,$minute));</tt></li>
+<li><tt> &nbsp; return 1;</tt></li>
+<li><tt>}</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>&nbsp;</tt></li>
+<li><tt>############################</tt></li>
+<li><tt>sub out {</tt></li>
+<li><tt> &nbsp; close(STAT);</tt></li>
+<li><tt> &nbsp; close(NET);</tt></li>
+<li><tt> &nbsp; Gtk2-&gt;main_quit;</tt></li>
+<li><tt>}</tt></li>
