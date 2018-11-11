@@ -68,6 +68,7 @@ $txmax = shift (@ARGV) || 40;	# max upload (kBps)
 
 $MIXER = "alsamixergui";
 $MIXER = "xterm -e 'alsamixer'";
+$MIXER = "pavucontrol";
 $PROCMAN = "xterm -e 'htop'";
 #$PROCMAN = "gtaskmanager";
 $CAL1 = "xmessage \"`ccal`\""; # nebo gcal
@@ -200,8 +201,8 @@ sub c_click {
 ##########################################################################
 
 sub launchMixer { exec $MIXER unless fork; }
-sub volup { system "amixer set $_[0] 5%+ &> /dev/null"; }
-sub voldown { system "amixer set $_[0] 5%- &> /dev/null"; }
+sub volup { system "amixer -Dpulse set $_[0] 5%+ &> /dev/null"; }
+sub voldown { system "amixer -Dpulse  set $_[0] 5%- &> /dev/null"; }
 sub mute {
 	if($bar{$_[0]}->get_text eq "x"){
 		$bar{$_[0]}->set_text($was{$_[0]});
@@ -209,7 +210,7 @@ sub mute {
 		$was{$_[0]}=$bar{$_[0]}->get_text;
 		$bar{$_[0]}->set_text("x");
 	}
-	system "amixer set ".($_[0]eq"vm" ? "Master":"PCM")." toggle> /dev/null";
+	system "amixer -Dpulse set ".($_[0]eq"vm" ? "Master":"PCM")." toggle> /dev/null";
 }
 
 sub popup {
@@ -260,9 +261,9 @@ sub mem {
 }
 
 sub vol {
-	$_ = `amixer`;
+	$_ = `amixer -D pulse sget Master`;
 	s/\n\s+/ /g;
-	($vol) = /'Master'.*\[(\d+)%\]/;
+	($vol) = /.*\[(\d+)%\]/;
 	return $vol;
 }
 
